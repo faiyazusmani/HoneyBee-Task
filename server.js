@@ -9,7 +9,7 @@ dotenv.config()
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, "public")));
 
 
 const dbConfig = {
@@ -84,7 +84,7 @@ async function initDatabase() {
 }
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.post("/register", async (req, res) => {
