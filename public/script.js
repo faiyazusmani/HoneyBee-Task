@@ -175,7 +175,7 @@ form.addEventListener("submit", async (e) => {
   data.phone = phoneDigits;
 
   try {
-    const response = await fetch("/register", {
+    const response = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
