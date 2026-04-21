@@ -3,11 +3,14 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const path = require("path");
 const mysql = require("mysql2/promise");
+const dotenv = require('dotenv')
 
+dotenv.config()
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname)));
+
 
 const dbConfig = {
   host: process.env.DB_HOST || "localhost",
@@ -16,6 +19,8 @@ const dbConfig = {
   database: process.env.DB_NAME || "internship_assignment",
   port: Number(process.env.DB_PORT || 3306)
 };
+
+const PORT = Number(process.env.PORT || 3000);
 
 let pool;
 let dbReady = false;
@@ -138,8 +143,8 @@ async function startServer() {
     );
   }
 
-  app.listen(3000, () => {
-    console.log("Server running at http://localhost:3000");
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
   });
 }
 
