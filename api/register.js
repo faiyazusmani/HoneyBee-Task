@@ -19,18 +19,6 @@ function isValidPhone(phone) {
 
 async function initDatabase() {
   try {
-    const rootConnection = await mysql.createConnection({
-      host: dbConfig.host,
-      user: dbConfig.user,
-      password: dbConfig.password,
-      port: dbConfig.port
-    });
-
-    await rootConnection.query(
-      `CREATE DATABASE IF NOT EXISTS \`${dbConfig.database}\``
-    );
-    await rootConnection.end();
-
     const pool = mysql.createPool({
       ...dbConfig,
       waitForConnections: true,
@@ -47,23 +35,6 @@ async function initDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-
-    const [uniqueIndexes] = await pool.query(
-      `
-        SELECT DISTINCT INDEX_NAME
-        FROM INFORMATION_SCHEMA.STATISTICS
-        WHERE TABLE_SCHEMA = ?
-          AND TABLE_NAME = 'users'
-          AND COLUMN_NAME = 'email'
-          AND NON_UNIQUE = 0
-          AND INDEX_NAME <> 'PRIMARY'
-      `,
-      [dbConfig.database]
-    );
-
-    for (const row of uniqueIndexes) {
-      await pool.query(`ALTER TABLE users DROP INDEX \`${row.INDEX_NAME}\``);
-    }
 
     return pool;
   } catch (error) {

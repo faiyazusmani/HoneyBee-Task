@@ -203,7 +203,7 @@ form.addEventListener("submit", async (e) => {
     togglePasswordBtn.innerText = "Show";
     togglePasswordBtn.setAttribute("aria-label", "Show password");
   } catch (error) {
-    setRegisterMessage("Error: " + error.message + " (run npm start)", true);
+    setRegisterMessage("Error: " + error.message, true);
   }
 });
 
