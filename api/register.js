@@ -2,11 +2,11 @@ const bcrypt = require("bcrypt");
 const mysql = require("mysql2/promise");
 
 const dbConfig = {
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "internship_assignment",
-  port: Number(process.env.DB_PORT || 3306)
+  host: (process.env.DB_HOST || "localhost").trim(),
+  user: (process.env.DB_USER || "root").trim(),
+  password: (process.env.DB_PASSWORD || "").trim(),
+  database: (process.env.DB_NAME || "internship_assignment").trim(),
+  port: Number((process.env.DB_PORT || "3306").trim())
 };
 
 function isValidEmail(email) {
@@ -92,6 +92,9 @@ export default async function handler(req, res) {
     return res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error("Registration error:", error.message);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({
+      message: "Internal server error",
+      detail: error.code || error.message || "Unknown DB error"
+    });
   }
 }
